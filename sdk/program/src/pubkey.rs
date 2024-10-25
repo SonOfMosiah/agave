@@ -171,9 +171,7 @@ impl TryFrom<&str> for Pubkey {
 pub fn bytes_are_curve_point<T: AsRef<[u8]>>(_bytes: T) -> bool {
     #[cfg(not(target_os = "solana"))]
     {
-        curve25519_dalek::edwards::CompressedEdwardsY::from_slice(_bytes.as_ref())
-            .decompress()
-            .is_some()
+        curve25519_dalek::edwards::CompressedEdwardsY::from_slice(_bytes.as_ref()).expect("bytes are not a curve point").decompress().is_some()
     }
     #[cfg(target_os = "solana")]
     unimplemented!();
